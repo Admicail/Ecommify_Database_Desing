@@ -1,6 +1,10 @@
 #Componentes de Análisis y ETL (Google Colab Notebooks)
+
+
 **Esteban Giovanny Garay Cano**  
+
 **Carlos Alfonso Muñoz Agudelo**
+
 **Carlos Sebastian Castillo Silva**
 
 
