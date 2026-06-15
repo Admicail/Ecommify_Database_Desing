@@ -1,4 +1,4 @@
-# ⚡ Estrategia de Indexación Avanzada NoSQL - MongoDB Atlas
+# Estrategia de Indexación Avanzada NoSQL - MongoDB Atlas
 **Carlos Alfonso Muñoz Agudelo - Esteban Giovanny Garay Cano - Carlos Sebastian Castillo Silva**  
 *Proyecto Integrador: Capa Interactiva de Baja Latencia*
 
@@ -6,7 +6,7 @@ Este módulo detalla el diseño y despliegue físico del índice compuesto imple
 
 ---
 
-## 📑 1. Especificación Técnica del Índice Compuesto
+## 1. Especificación Técnica del Índice Compuesto
 
 Para optimizar el patrón de acceso principal del frontend (navegación paginada por categorías con visualización prioritaria de ofertas), se ejecutó la creación del siguiente índice compuesto en el clúster productivo:
 
@@ -17,7 +17,7 @@ db.CATALOG_PRODUCTS_COLLECTION.createIndex({
 })
 ```
 
-### 🧱 Justificación Estructural bajo la Regla ESR (Equality, Sort, Range)
+### Justificación Estructural bajo la Regla ESR (Equality, Sort, Range)
 El diseño de la llave compuesta sigue estrictamente el estándar de ingeniería NoSQL **ESR** para maximizar la eficiencia del motor de búsqueda:
 
 1.  **Filtro de Igualdad (`category: 1`)**: Al colocarse como el prefijo absoluto del índice, permite al enrutador distribuido `mongos` interceptar las consultas de navegación y realizar una **Consulta Dirigida (Targeted Query)** directo al Shard físico específico que almacena dicha categoría. Esto elimina por completo el tráfico basura en la red del clúster provocado por los escaneos distribuidos (*Scatter-Gather*).
@@ -25,7 +25,7 @@ El diseño de la llave compuesta sigue estrictamente el estándar de ingeniería
 
 ---
 
-## 🚀 2. Impacto Cuantitativo en el Hardware (Antes vs. Después)
+##  2. Impacto Cuantitativo en el Hardware (Antes vs. Después)
 
 A través del método analítico nativo `.explain("executionStats")` ejecutado en MongoDB Compass, se contrastó el rendimiento del hardware al cargar las tarjetas de productos del catálogo de Olist (32,341 registros activos):
 
@@ -35,7 +35,7 @@ A través del método analítico nativo `.explain("executionStats")` ejecutado e
 
 ---
 
-## 📥 3. Instrucciones de Despliegue
+## 3. Instrucciones de Despliegue
 
 1.  Iniciar la aplicación de escritorio **MongoDB Compass** o abrir el shell interactivo (`mongosh`) conectado al clúster `ClusterOlistKaggle`.
 2.  Asegurar el posicionamiento sobre la base de datos `DataBaseOlistKaggle` y la colección `CATALOG_PRODUCTS_COLLECTION`.
