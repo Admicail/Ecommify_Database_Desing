@@ -61,3 +61,31 @@ Ecommify adopta una **Arquitectura Políglota Híbrida**, bajo la premisa de que
 <img src="https://github.com/Admicail/Ecommify_Database_Desing/blob/main/docs/Evidences/screenshots/Colecciones%20MongoDB.png" width="300">
 
 
+## 2. Especificación Detallada del Modelo Lógico
+
+### A. Módulo Transaccional (PostgreSQL)
+Las entidades core del negocio se estructuran bajo tipos de datos avanzados y extensiones empresariales para maximizar el rendimiento:
+*   **Clientes y Vendedores (`ecommify_customers` / `ecommify_sellers`)**: Implementan el atributo compuesto personalizado **`address_type`**, el cual encapsula de forma atómica el código postal, la ciudad y el estado, promoviendo la reutilización de código.
+*   **Órdenes (`ecommify_orders`)**: Incorpora el tipo avanzado de Rango Temporal **`TSRANGE`** (`order_logistics_timeline`). Almacena en una sola columna el momento exacto de la compra y la entrega física, optimizando las consultas analíticas de tiempos de entrega y asegurando la coherencia cronológica.
+*   **Detalles de Órdenes (`ecommify_order_details`)**: Entidad asociativa que congela precios y fletes individuales. Maneja los desgloses de pagos múltiples y complejos (ej. combinar tarjetas y cupones) mediante un tipo **`JSONB`** (`payment_details`) respaldado por índices GIN.
+*   **Geolocalización (`ecommify_geolocation`)**: Integra la extensión espacial **PostGIS** bajo el tipo nativo **`geometry(Point, 4326)`**. Permite calcular distancias vectoriales y optimizar costos de flete por proximidad de códigos postales.
+
+### B. Módulo Documental (MongoDB)
+Las colecciones principales aplican el **Patrón de Incrustación (Embedding)** para auto-contener los datos relacionados y eliminar por completo el costo computacional de las operaciones `JOIN`:
+*   **Catálogo de Productos (`catalog_products_collection`)**: Almacena fichas unificadas de productos. El campo `attributes` se define como un objeto flexible polimórfico para aceptar especificaciones variables según la categoría sin alterar la base de datos. Incorpora el campo precalculado `reviews_summary` (`avg_score` y `total_reviews`) que actúa como caché analítico para evitar agregaciones pesadas en caliente.
+*   **Sesiones de Clientes (`customer_sessions_collection`)**: Gestiona las variables efímeras de carritos de compras activos en tiempo real. Implementa el **Patrón TTL** sobre el campo `expires_at` para purgar automáticamente del clúster las sesiones inactivas o carritos abandonados, protegiendo la memoria RAM.
+
+---
+
+## 3. Estrategia de Integración e Inter-Motor
+
+La base de datos híbrida opera bajo un esquema de **Acoplamiento Débil**, donde la consistencia cruzada no se basa en restricciones físicas (llaves foráneas inter-motor), sino en **referencias lógicas compartidas**. 
+
+*   El `_id` de la colección de productos en MongoDB coincide lógicamente con la clave primaria `product_id` en PostgreSQL.
+*   El `customer_id` de la sesión en MongoDB se empareja lógicamente con el registro maestro del cliente guardado en PostgreSQL.
+
+### Flujo Crítico de Checkout y Compra:
+1.  El usuario navega por el catálogo (consultas AP veloces a MongoDB) y añade elementos a su carrito (escrituras en tiempo real en la colección de sesiones NoSQL).
+2.  Al presionar el botón de pago, la capa de aplicación lee el payload del documento de la sesión en MongoDB y lo transfiere hacia las tablas relacionales de PostgreSQL.
+3.  PostgreSQL procesa e inserta los datos de forma atómica en las tablas `ecommify_orders` y `ecommify_order_details`, validando la precisión financiera de precios y fletes bajo tipos exactos `NUMERIC` y protegiendo la transacción bajo garantías ACID absolutas.
+
