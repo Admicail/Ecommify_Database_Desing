@@ -119,6 +119,10 @@ Las capturas de pantalla guardadas en este módulo sirven como sustento científ
 *   **Detalle Visual**: Muestra la pestaña **Network Access** en la consola web de MongoDB Atlas.
 *   **Diagnóstico**: Evidencia la configuración activa de las listas de control de acceso IP (`IP Access List`). Registra la regla global `0.0.0.0/0` para facilitar el enlace dinámico de las IPs variables asignadas por las máquinas virtuales de Google Colab durante la etapa de pruebas de software.
 
+<img src="https://github.com/Admicail/Ecommify_Database_Desing/blob/main/docs/Evidences/screenshots/IP%20Acces%20List.jpg" width="300">
+
+
+
 ### Evidencia 2: Inicialización por Escritura Implícita (`test_ping_connection.png`)
 *   **Detalle Visual**: Muestra la terminal de Colab arrojando el mensaje de éxito del comando administrativo `client.admin.command('ping')`.
 *   **Diagnóstico**: Prueba reina de la capa de red y datos. El clúster responde devolviendo de forma exacta el catálogo inicial detectado en el servidor: `['DataBaseOlistKaggle', 'admin', 'local']`.
