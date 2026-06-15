@@ -52,7 +52,12 @@ Este módulo concentra las especificaciones de diseño conceptual y lógico que 
 
 Ecommify adopta una **Arquitectura Políglota Híbrida**, bajo la premisa de que una plataforma moderna de alta escala no debe limitarse a un único tipo de motor de base de datos.
 
+## 1.1 Esquema Relacional Base de Datos transaccional
+
 <img width="934" height="709" alt="Esquema Relacional" src="https://github.com/Admicail/Ecommify_Database_Desing/blob/main/docs/Evidences/screenshots/Esquema%20Relacional.jpg" />
 
+## 1.2 Colecciones de datos en MongoDB
+
+<img src="https://github.com/Admicail/Ecommify_Database_Desing/blob/main/docs/Evidences/screenshots/Colecciones%20MongoDB.png" width="300">
 
 
