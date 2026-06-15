@@ -1,6 +1,8 @@
 # Implementación y Optimización de la Infraestructura de Datos - Ecommify
 **Carlos Alfonso Muñoz Agudelo**
+
 **Esteban Giovanny Garay Cano**
+
 **Carlos Sebastian Castillo Silva**
 
 
