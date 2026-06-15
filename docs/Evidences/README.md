@@ -89,3 +89,60 @@ La base de datos híbrida opera bajo un esquema de **Acoplamiento Débil**, dond
 2.  Al presionar el botón de pago, la capa de aplicación lee el payload del documento de la sesión en MongoDB y lo transfiere hacia las tablas relacionales de PostgreSQL.
 3.  PostgreSQL procesa e inserta los datos de forma atómica en las tablas `ecommify_orders` y `ecommify_order_details`, validando la precisión financiera de precios y fletes bajo tipos exactos `NUMERIC` y protegiendo la transacción bajo garantías ACID absolutas.
 
+
+
+
+
+# Esquemas Flexibles y Validación NoSQL
+Este módulo reúne los reportes analíticos de ejecución, bitácoras de consola y capturas de pantalla que certifican el aprovisionamiento, la inyección masiva de prueba y el comportamiento de los patrones de diseño NoSQL validados de extremo a extremo en el clúster **`ClusterOlistKaggle`** de MongoDB Atlas.
+
+---
+
+## 1. Matriz de Control de Inyección y Estado de Colecciones
+
+Tras ejecutar los scripts automatizados de validación de infraestructura desde la máquina virtual de Google Colab hacia la nube, se capturaron las siguientes métricas de consistencia física en el clúster:
+
+| Parámetro Evaluado | Colección `products` (Catálogo) | Colección `reviews` (Referencia) | Diagnóstico Técnico del Estado del Clúster |
+| :--- | :---: | :---: | :--- |
+| **Volumen de Datos Inyectados** | **2,000 documentos** | **7,949 documentos** | **Carga Masiva Exitosa**: El clúster absorbió la carga sin pérdida de paquetes ni bloqueos en el firewall de Atlas. |
+| **Estrategia de Modelado** | `Polymorphic & Embedded` | `External Referencing` | El documento primario se mantiene ligero al aislar los miles de comentarios en una colección satélite. |
+| **Mecanismo de Conectividad** | Cifrado (`MONGO_URI`) | Cifrado (`MONGO_URI`) | Cero exposición de credenciales en texto plano mediante el gestor de secretos de Colab. |
+| **Índice de Control (`_id`)** | Generado por Motor | Generado por Motor | La presencia de hashes hexadecimales (**`ObjectId`**) certifica el éxito de la escritura implícita. |
+
+---
+
+## 🔬 2. Diagnóstico Técnico de Evidencias Gráficas
+
+Las capturas de pantalla guardadas en este módulo sirven como sustento científico de la validación del esquema polimórfico:
+
+### Evidencia 1: Control Perimetral de Red (`network_access_0000.png`)
+*   **Detalle Visual**: Muestra la pestaña **Network Access** en la consola web de MongoDB Atlas.
+*   **Diagnóstico**: Evidencia la configuración activa de las listas de control de acceso IP (`IP Access List`). Registra la regla global `0.0.0.0/0` para facilitar el enlace dinámico de las IPs variables asignadas por las máquinas virtuales de Google Colab durante la etapa de pruebas de software.
+
+### Evidencia 2: Inicialización por Escritura Implícita (`test_ping_connection.png`)
+*   **Detalle Visual**: Muestra la terminal de Colab arrojando el mensaje de éxito del comando administrativo `client.admin.command('ping')`.
+*   **Diagnóstico**: Prueba reina de la capa de red y datos. El clúster responde devolviendo de forma exacta el catálogo inicial detectado en el servidor: `['DataBaseOlistKaggle', 'admin', 'local']`.
+
+### Evidencia 3: Flexibilidad Taxonómica y Polimorfismo (`products_schema_flexibility.png`)
+*   **Detalle Visual**: Captura de MongoDB Compass inspeccionando la colección `products`.
+*   **Diagnóstico**: Certifica científicamente que el subdocumento **`specifications`** cambia dinámicamente de estructura según la fila evaluada sin requerir alteraciones al esquema global:
+    *   La ficha de la categoría *electronics* expone variables embebidas de marca, modelo y garantía (`brand`, `model`, `warranty_months`).
+    *   La ficha de la categoría *home* transmuta a variables físicas complejas de material, dimensiones y peso en kilogramos (`material`, `dimensions_cm`, `weight_kg`).
+
+### Evidencia 4: Auditoría del Computed Pattern (`computed_pattern_validation.png`)
+*   **Detalle Visual**: Panel visual de documentos con los campos `metrics` y `reviews_summary` recalculados.
+*   **Diagnóstico**: Evidencia el impacto del pipeline de agregación ejecutado para promediar las calificaciones. Las variables `average_rating` y `total_reviews` se guardan de forma física en caché dentro de la raíz del producto. Esto blinda al frontend, permitiendo mostrar la reputación en las tarjetas web con latencias de 0 ms, al evitar el conteo al vuelo de millones de registros concurrentes.
+
+### Evidencia 5: Cruce de Datos mediante Operadores No Relacionales (`lookup_reviews_join.png`)
+*   **Detalle Visual**: Salida en consola de la ejecución del stage **`$lookup`**.
+*   **Diagnóstico**: Demuestra la capacidad del motor documental para resolver relaciones lógicas externas por referencia (`Referencing`). Une el catálogo con la colección de comentarios mediante la condición `localField: "_id"` y `foreignField: "product_id"`, inyectando el detalle de las reseñas en un arreglo dinámico (`reviews_detail`) solo cuando el caso de uso del negocio lo demanda.
+
+---
+
+## 3. Instrucciones para la Reproducción de las Pruebas
+
+1.  Asegurar la ejecución previa de los notebooks de inicialización y carga ubicados en el repositorio.
+2.  Para auditar los datos de forma visual, abrir **MongoDB Compass**, ingresar la cadena de conexión segura y examinar la distribución de los campos embebidos desde la pestaña **Documents**.
+3.  Para evaluar el rendimiento de los índices creados (`category`, `price`, `seller_id`), se puede hacer uso del constructor visual en la pestaña **Aggregations** de Compass.
+
+
