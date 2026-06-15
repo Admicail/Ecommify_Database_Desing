@@ -122,31 +122,11 @@ Las capturas de pantalla guardadas en este módulo sirven como sustento científ
 <img src="https://github.com/Admicail/Ecommify_Database_Desing/blob/main/docs/Evidences/screenshots/IP%20Acces%20List.jpg" width="300">
 
 
+## 3. Preparar e insertar colección de productos de ejemplo
 
-### Evidencia 2: Inicialización por Escritura Implícita (`test_ping_connection.png`)
-*   **Detalle Visual**: Muestra la terminal de Colab arrojando el mensaje de éxito del comando administrativo `client.admin.command('ping')`.
-*   **Diagnóstico**: Prueba reina de la capa de red y datos. El clúster responde devolviendo de forma exacta el catálogo inicial detectado en el servidor: `['DataBaseOlistKaggle', 'admin', 'local']`.
+1.  Verificación de la carga de documentos.
+2.  Se verifica la colección: **clusterolistkaggle.yjfzm0i.mongodb.net --> DataBaseOlistKaggle --> CATALOG_PRODUCTS_COLLECTION**.
 
-### Evidencia 3: Flexibilidad Taxonómica y Polimorfismo (`products_schema_flexibility.png`)
-*   **Detalle Visual**: Captura de MongoDB Compass inspeccionando la colección `products`.
-*   **Diagnóstico**: Certifica científicamente que el subdocumento **`specifications`** cambia dinámicamente de estructura según la fila evaluada sin requerir alteraciones al esquema global:
-    *   La ficha de la categoría *electronics* expone variables embebidas de marca, modelo y garantía (`brand`, `model`, `warranty_months`).
-    *   La ficha de la categoría *home* transmuta a variables físicas complejas de material, dimensiones y peso en kilogramos (`material`, `dimensions_cm`, `weight_kg`).
-
-### Evidencia 4: Auditoría del Computed Pattern (`computed_pattern_validation.png`)
-*   **Detalle Visual**: Panel visual de documentos con los campos `metrics` y `reviews_summary` recalculados.
-*   **Diagnóstico**: Evidencia el impacto del pipeline de agregación ejecutado para promediar las calificaciones. Las variables `average_rating` y `total_reviews` se guardan de forma física en caché dentro de la raíz del producto. Esto blinda al frontend, permitiendo mostrar la reputación en las tarjetas web con latencias de 0 ms, al evitar el conteo al vuelo de millones de registros concurrentes.
-
-### Evidencia 5: Cruce de Datos mediante Operadores No Relacionales (`lookup_reviews_join.png`)
-*   **Detalle Visual**: Salida en consola de la ejecución del stage **`$lookup`**.
-*   **Diagnóstico**: Demuestra la capacidad del motor documental para resolver relaciones lógicas externas por referencia (`Referencing`). Une el catálogo con la colección de comentarios mediante la condición `localField: "_id"` y `foreignField: "product_id"`, inyectando el detalle de las reseñas en un arreglo dinámico (`reviews_detail`) solo cuando el caso de uso del negocio lo demanda.
-
----
-
-## 3. Instrucciones para la Reproducción de las Pruebas
-
-1.  Asegurar la ejecución previa de los notebooks de inicialización y carga ubicados en el repositorio.
-2.  Para auditar los datos de forma visual, abrir **MongoDB Compass**, ingresar la cadena de conexión segura y examinar la distribución de los campos embebidos desde la pestaña **Documents**.
-3.  Para evaluar el rendimiento de los índices creados (`category`, `price`, `seller_id`), se puede hacer uso del constructor visual en la pestaña **Aggregations** de Compass.
+<img src="https://github.com/Admicail/Ecommify_Database_Desing/blob/main/docs/Evidences/screenshots/Document_CATALOG_PRODUCTS_COLECCTION.jpg" width="300">
 
 
