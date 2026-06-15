@@ -1,5 +1,11 @@
 # 📂 Datos de Carga e Inyección Masiva (Seed Data - MongoDB)
-**Esteban Giovanny Garay Cano**  
+
+**Carlos Alfonso Muñoz Agudelo**
+
+**Esteban Giovanny Garay Cano**
+
+**Carlos Sebastian Castillo Silva**
+
 *Proyecto Integrador: Datos de Inicialización del Clúster NoSQL*
 
 Esta carpeta contiene los archivos de datos optimizados y homologados en formato JSON nativo. Estos archivos son el resultado directo de los procesos de extracción, limpieza y transformación (ETL) ejecutados sobre los datasets originales planos de Kaggle (Olist), quedando completamente acondicionados para su inyección en **MongoDB Atlas**.
