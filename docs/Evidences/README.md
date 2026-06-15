@@ -52,4 +52,10 @@ Este módulo concentra las especificaciones de diseño conceptual y lógico que 
 
 Ecommify adopta una **Arquitectura Políglota Híbrida**, bajo la premisa de que una plataforma moderna de alta escala no debe limitarse a un único tipo de motor de base de datos.
 
+<img width="934" height="709" alt="Esquema Relacional" src="https://github.com/user-attachments/assets/c9b9524f-4448-4efb-abb2-eaef55511bfa" />
+
+![Esquema Relacional.jpg](docs/Evidences/screenshots/Esquema Relacional.jpg)
+
+
+
 
