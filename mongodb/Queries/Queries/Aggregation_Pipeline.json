@@ -1,0 +1,22 @@
+db.CATALOG_PRODUCTS_COLLECTION.explain("executionStats").aggregate([
+  { $match: { category: "cama_mesa_banho" } },
+  { $sort: { "active_promotions.discount": -1 } },
+  { $project: { _id: 1, category: 1, active_promotions: 1, reviews_summary: 1 } },
+  {
+    $addFields: {
+      etiqueta_destacado: {
+        $cond: {
+          if: { $eq: ["$active_promotions.is_promo", true] },
+          then: "OFERTA RECOMENDADA",
+          else: "PRODUCTO REGULAR"
+        }
+      }
+    }
+  },
+  { $limit: 20 }
+], 
+{ 
+  allowDiskUse: true,
+  // FUERZA AL MOTOR A USAR TU ÍNDICE COMPUESTO CORRECTO
+  hint: { "category": 1, "active_promotions.discount": -1 } 
+})
