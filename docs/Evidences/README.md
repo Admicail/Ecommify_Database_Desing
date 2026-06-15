@@ -40,4 +40,16 @@ Para optimizar las lecturas masivas y eliminar el costo computacional de las uni
 
 ## 4. Flujos de Sincronización Inter-Motor
 
-El negocio orquesta el ciclo de vida de la información a través de 5 flujos lógicos controlados desde la capa de la aplicación:
+El negocio orquesta el ciclo de vida de la información a través de 5 flujos lógicos controlados desde la capa de la aplicació
+
+
+# Documentación Técnica del Diseño Conceptual y Lógico
+
+Este módulo concentra las especificaciones de diseño conceptual y lógico que orquestan el ecosistema de datos de **Ecommify**. El modelo fragmenta el dominio de Olist para explotar las fortalezas del motor relacional PostgreSQL y el motor documental MongoDB Atlas, conviviendo bajo un esquema de acoplamiento débil.
+
+
+## 1. Enfoque Arquitectónico Seleccionado
+
+Ecommify adopta una **Arquitectura Políglota Híbrida**, bajo la premisa de que una plataforma moderna de alta escala no debe limitarse a un único tipo de motor de base de datos.
+
+
